@@ -13,9 +13,9 @@ Default login: **admin** / **Admin@123**. Change it immediately in Staff Users.
 ## Upload settings
 In `php.ini`, then restart Apache:
 ```
-upload_max_filesize = 5M
-post_max_size = 64M
-max_file_uploads = 20
+upload_max_filesize = 500M
+post_max_size = 512M
+max_file_uploads = 10
 ```
 
 ## Upgrade an existing installation
@@ -27,7 +27,7 @@ max_file_uploads = 20
 5. Review `cleanup_legacy.sql` separately and run it only after another backup and confirmation that old data is no longer needed.
 
 ## Operating notes
-A new archive is saved atomically with its documents and payment. The wizard requires a unique reference number, at least two documents, sender name, sender phone, and an amount greater than zero. Documents are PDF/JPG/JPEG/PNG and are limited to 5 MB each.
+A new archive is saved atomically with its documents and payment. The wizard requires a unique reference number, one document, sender name, sender phone, and an amount greater than zero. Documents are PDF/JPG/JPEG/PNG and are maximum 500 MB per document, with no minimum size.
 
 Administrators can manage archives, payments, staff, performance, and the append-only activity log. Staff can add, search, and view archives. Sessions expire after ten minutes of inactivity; the client warning appears at nine minutes, while the server remains authoritative.
 
@@ -38,3 +38,4 @@ C:\xampp\php\php.exe -d extension=gd tools\generate_icons.php
 ```
 
 PWA installation works on `http://localhost` or HTTPS. For phone testing, use HTTPS with `mkcert` configured for XAMPP or use a secure tunnel. The service worker caches only static assets and the offline page; private PHP pages and uploaded files are not cached.
+

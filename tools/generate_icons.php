@@ -1,0 +1,6 @@
+<?php
+declare(strict_types=1);
+$source=__DIR__.'/../assets/img/logo.jpeg';$out=__DIR__.'/../assets/icons';if(!extension_loaded('gd')){fwrite(STDERR,"PHP GD extension is required.\n");exit(1);}if(!is_file($source))exit("Missing logo.jpeg\n");if(!is_dir($out))mkdir($out,0750,true);
+$src=imagecreatefromjpeg($source);$sw=imagesx($src);$sh=imagesy($src);$side=min($sw,$sh);$sx=(int)(($sw-$side)/2);$sy=(int)(($sh-$side)/2);
+$square=imagecreatetruecolor(1024,1024);imagecopyresampled($square,$src,0,0,$sx,$sy,1024,1024,$side,$side);imagepng($square,__DIR__.'/../assets/img/logo-square.png',6);
+foreach([['icon-192.png',192,false],['icon-512.png',512,false],['icon-512-maskable.png',512,true],['apple-touch-icon.png',180,false],['favicon-32.png',32,false],['favicon-16.png',16,false]] as [$name,$size,$maskable]){$canvas=imagecreatetruecolor($size,$size);imagealphablending($canvas,true);$bg=imagecolorallocate($canvas,19,44,96);imagefill($canvas,0,0,$bg);$pad=$maskable?(int)($size*.18):($size>64?(int)($size*.08):0);$target=$size-($pad*2);imagecopyresampled($canvas,$square,$pad,$pad,0,0,$target,$target,1024,1024);imagepng($canvas,$out.'/'.$name,6);imagedestroy($canvas);}imagedestroy($square);imagedestroy($src);echo "Square logo and icons generated.\n";
